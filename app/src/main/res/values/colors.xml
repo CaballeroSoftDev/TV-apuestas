@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="background_left_panel">#0085FF</color>
+    <color name="background_right_panel">#0DCEC4</color>
+    <color name="shrine_pink_light">#0085FF</color>
+    <color name="text_color">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="green_button">#1ED760</color>
+    <color name="red_button">#FF4040</color>
+</resources>

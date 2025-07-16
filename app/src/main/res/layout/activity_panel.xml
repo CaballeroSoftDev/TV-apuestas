@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/panel"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PanelActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- Guideline to split the screen -->
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_middle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
+
+        <!-- Left Background Panel -->
+        <View
+            android:id="@+id/left_background"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/background_left_panel"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_middle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Right Background Panel -->
+        <View
+            android:id="@+id/right_background"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/background_right_panel"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideline_middle"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Header -->
+        <ImageView
+            android:id="@+id/user_icon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:contentDescription="@string/user_icon_description"
+            android:src="@drawable/user"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="@string/usuario"
+            android:textColor="@color/text_color"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/user_icon"
+            app:layout_constraintEnd_toStartOf="@+id/user_icon"
+            app:layout_constraintTop_toTopOf="@+id/user_icon" />
+
+        <TextView
+            android:id="@+id/saldo_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="@string/saldo"
+            android:textColor="@color/text_color"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/user_name"
+            app:layout_constraintEnd_toStartOf="@+id/user_name"
+            app:layout_constraintTop_toTopOf="@+id/user_name" />
+
+        <ImageView
+            android:id="@+id/saldo_icon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="@string/saldo_icon_description"
+            android:src="@drawable/coin"
+            app:layout_constraintBottom_toBottomOf="@+id/saldo_text"
+            app:layout_constraintEnd_toStartOf="@+id/saldo_text"
+            app:layout_constraintTop_toTopOf="@+id/saldo_text" />
+
+        <!-- Main Content -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal"
+            android:weightSum="3"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/user_icon">
+
+            <!-- Team 1 Panel -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.2"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <ImageView
+                    android:id="@+id/team1_logo"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_marginTop="24dp"
+                    android:contentDescription="@string/team_1_logo_description"
+                    android:src="@drawable/team" />
+
+                <TextView
+                    android:id="@+id/textViewHomeTeam"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="team1"
+                    android:textColor="@color/text_color"
+                    android:textSize="20sp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/team1_bet_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:background="@drawable/button_background_green"
+                        android:gravity="center"
+                        android:paddingStart="24dp"
+                        android:paddingTop="12dp"
+                        android:paddingEnd="24dp"
+                        android:paddingBottom="12dp"
+                        android:text="@string/bet_amount_add"
+                        android:textColor="@color/white"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <!-- NUEVO: Draw Panel -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.6"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/vs" />
+
+                <TextView
+                    android:id="@+id/textViewHomeTeam"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Draw"
+                    android:textColor="@color/text_color"
+                    android:textSize="20sp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/draw_bet_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:background="@drawable/button_background_green"
+                        android:gravity="center"
+                        android:paddingStart="24dp"
+                        android:paddingTop="12dp"
+                        android:paddingEnd="24dp"
+                        android:paddingBottom="12dp"
+                        android:text="$200 MXN"
+                        android:textColor="@color/white"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Team 2 Panel -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.2"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <ImageView
+                    android:id="@+id/team2_logo"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_marginTop="24dp"
+                    android:contentDescription="@string/team_2_logo_description"
+                    android:src="@drawable/team" />
+
+                <TextView
+                    android:id="@+id/textViewAwayTeam"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="awayTeam"
+                    android:textColor="@color/text_color"
+                    android:textSize="20sp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/team2_bet_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:background="@drawable/button_background_red"
+                        android:gravity="center"
+                        android:paddingStart="24dp"
+                        android:paddingTop="12dp"
+                        android:paddingEnd="24dp"
+                        android:paddingBottom="12dp"
+                        android:text="@string/bet_amount_remove"
+                        android:textColor="@color/white"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <FrameLayout
+        android:id="@+id/standard_bottom_sheet"
+        style="?attr/bottomSheetStyle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="8dp"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/white"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/bottomsheet_button"
+                    android:layout_width="50dp"
+                    android:layout_height="5dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@android:color/darker_gray" />
+
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal">
+
+                    <VideoView
+                        android:id="@+id/main_video_view"
+                        android:layout_width="600dp"
+                        android:layout_height="300dp" />
+                </FrameLayout>
+                <!-- RecyclerView para el scroll horizontal -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/horizontal_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_horizontal_layout" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/horizontal_recycler_view2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_horizontal_layout" />
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+    </FrameLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

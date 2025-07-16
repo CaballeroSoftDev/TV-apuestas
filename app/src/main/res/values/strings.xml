@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">ApuestasTV</string>
+    <string name="saldo">Saldo: $ 0.0 MXN</string>
+    <string name="usuario">Usuario</string>
+    <string name="victorias">Victorias: 0</string>
+    <string name="empates">Empates: 0</string>
+    <string name="derrotas">Derrotas: 0</string>
+    <string name="bet_amount_add">+ $200 MXN</string>
+    <string name="bet_amount_remove">- $200 MXN</string>
+    <string name="add_symbol">+</string>
+    <string name="remove_symbol">-</string>
+    <string name="team_1_logo_description">Logo del equipo 1</string>
+    <string name="team_2_logo_description">Logo del equipo 2</string>
+    <string name="user_icon_description">Icono de usuario</string>
+    <string name="saldo_icon_description">Icono de saldo</string>
+    <string name="placeholder_video">Video Ej.</string>
+
+    <!-- Strings para la pantalla de login -->
+    <string name="username_hint">Nombre de usuario</string>
+    <string name="password_hint">Contraseña</string>
+    <string name="login_button">Iniciar sesión</string>
+    <string name="background_image_desc">Imagen de fondo</string>
+</resources>
