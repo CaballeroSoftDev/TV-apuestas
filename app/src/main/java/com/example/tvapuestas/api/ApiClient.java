@@ -28,14 +28,10 @@ public class ApiClient {
                 Request original = chain.request();
                 HttpUrl originalHttpUrl = original.url();
 
-                System.out.println("Original URL: " + originalHttpUrl.toString());
-
                 // Añadir apiKey como query parameter
                 HttpUrl url = originalHttpUrl.newBuilder()
                         .addQueryParameter("apiKey", API_KEY)
                         .build();
-
-                System.out.println("Modified URL: " + url.toString());
 
                 Request.Builder requestBuilder = original.newBuilder()
                         .url(url);

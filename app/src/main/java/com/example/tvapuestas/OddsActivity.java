@@ -2,7 +2,9 @@ package com.example.tvapuestas;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,17 +17,24 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.tvapuestas.adapters.OddsAdapter;
 import com.example.tvapuestas.api.ApiClient;
+import com.example.tvapuestas.api.ApiFootballClient;
+import com.example.tvapuestas.api.LeagueService;
 import com.example.tvapuestas.api.OddsService;
 import com.example.tvapuestas.model.Bookmakers;
+import com.example.tvapuestas.model.LeaguesInfo;
+import com.example.tvapuestas.model.LeaguesResponse;
 import com.example.tvapuestas.model.Odds;
+import com.github.twocoffeesoneteam.glidetovectoryou.GlideToVectorYou;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 
 public class OddsActivity extends AppCompatActivity implements OddsAdapter.OnOddsClickListener {
 
@@ -34,7 +43,13 @@ public class OddsActivity extends AppCompatActivity implements OddsAdapter.OnOdd
     private List<Odds> oddsDataList;
     private String username;
     private String sportKey;
+
+    private String leagueName;
+    private String countryName;
+
     private TextView textViewSportTitleHeader;
+    private ImageView imageViewLeagueIcon;
+    private ImageView imageViewCountryIcon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,9 +63,17 @@ public class OddsActivity extends AppCompatActivity implements OddsAdapter.OnOdd
         username = intent.getStringExtra("username");
 
         textViewSportTitleHeader = findViewById(R.id.textViewSportTitleHeader);
+        imageViewLeagueIcon = findViewById(R.id.imageViewLeagueIcon);
+        imageViewCountryIcon = findViewById(R.id.imageViewCountryIcon);
 
         if (sportKey != null && description != null) {
             textViewSportTitleHeader.setText(description);
+            String[] parts = description.split("/");
+            String[] partsLeague = parts[1].split("-");
+            leagueName = partsLeague[0].trim();
+            countryName = partsLeague.length > 1 ? partsLeague[1].trim() : null;
+
+            loadLeague(leagueName, countryName);
         } else {
             textViewSportTitleHeader.setText("Desconocido");
         }
@@ -104,6 +127,8 @@ public class OddsActivity extends AppCompatActivity implements OddsAdapter.OnOdd
                 intent.putExtra("commenceTime", odds.getCommenceTime());
                 intent.putExtra("homeTeam", odds.getHomeTeam());
                 intent.putExtra("awayTeam", odds.getAwayTeam());
+                intent.putExtra("leagueName", leagueName);
+                intent.putExtra("countryName", countryName);
                 intent.putExtra("bookmaker", selectedBookmaker); // Pasar el objeto Bookmakers
                 startActivity(intent);
             }
@@ -114,6 +139,60 @@ public class OddsActivity extends AppCompatActivity implements OddsAdapter.OnOdd
         dialog.show();
     }
 
+    private void loadLeague(String name, String country) {
+        LeagueService leagueService = ApiFootballClient.getClient().create(LeagueService.class);
+
+        Call<LeaguesResponse> call = country != null && !country.isEmpty() ?
+                leagueService.getLeagueByNameCountry(name, country) :
+                leagueService.getLeagueByName(name);
+
+        call.enqueue(new Callback<LeaguesResponse>() {
+
+            @Override
+            public void onResponse(Call<LeaguesResponse> call, Response<LeaguesResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    LeaguesResponse leaguesResponse = response.body();
+
+                    List<LeaguesInfo> leaguesList = leaguesResponse.getResponse();
+                    if (!leaguesList.isEmpty()) {
+                        LeaguesInfo leagues = leaguesList.get(0);
+                        String logoUrl = leagues.getLeague().getLogo();
+                        String countryLogoUrl = leagues.getCountry().getFlag();
+
+                        if (logoUrl != null && !logoUrl.isEmpty()) {
+                            // Usar Glide para cargar la imagen desde URL
+                            Glide.with(OddsActivity.this)
+                                    .load(logoUrl)
+                                    .placeholder(R.drawable.league) // imagen por defecto mientras carga
+                                    .error(R.drawable.league) // imagen por defecto si hay error
+                                    .into(imageViewLeagueIcon);
+                        } else {
+                            Toast.makeText(OddsActivity.this, "Logo no disponible para " + name, Toast.LENGTH_SHORT).show();
+                        }
+
+                        if (countryLogoUrl != null && !countryLogoUrl.isEmpty()) {
+                            Uri uri = Uri.parse(countryLogoUrl);
+                            GlideToVectorYou.justLoadImage(OddsActivity.this, uri, imageViewCountryIcon);
+                        } else {
+                            Toast.makeText(OddsActivity.this, "Logo no disponible para " + country, Toast.LENGTH_SHORT).show();
+                        }
+
+                    } else {
+                        Toast.makeText(OddsActivity.this, "Liga no encontrada: " + name, Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(OddsActivity.this, "Error al cargar", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<LeaguesResponse> call, Throwable t) {
+                Toast.makeText(OddsActivity.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+    }
 
     private void loadOddsData() {
         OddsService oddsService = ApiClient.getClient().create(OddsService.class);
@@ -135,7 +214,6 @@ public class OddsActivity extends AppCompatActivity implements OddsAdapter.OnOdd
 
             @Override
             public void onFailure(Call<List<Odds>> call, Throwable t) {
-                System.out.println("Error: " + t.getMessage());
                 Toast.makeText(OddsActivity.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

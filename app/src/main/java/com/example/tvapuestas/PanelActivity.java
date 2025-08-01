@@ -23,14 +23,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.tvapuestas.adapters.HorizontalVideoAdapter;
-import com.example.tvapuestas.api.AllSportsApiClient;
-import com.example.tvapuestas.api.ApiClient;
-import com.example.tvapuestas.api.OddsService;
+import com.example.tvapuestas.api.ApiFootballClient;
 import com.example.tvapuestas.api.TeamService;
 import com.example.tvapuestas.model.Bookmakers;
-import com.example.tvapuestas.model.Odds;
-import com.example.tvapuestas.model.Team;
-import com.example.tvapuestas.model.TeamResponse;
+import com.example.tvapuestas.model.TeamsInfo;
+import com.example.tvapuestas.model.TeamsResponse;
 import com.example.tvapuestas.model.VideoItemModel;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
@@ -62,6 +59,9 @@ public class PanelActivity extends AppCompatActivity implements HorizontalVideoA
 
     private Bookmakers bookmaker;
 
+    private String leagueName;
+    private String countryName;
+
     private ImageView team1Logo;
     private ImageView team2Logo;
 
@@ -76,9 +76,9 @@ public class PanelActivity extends AppCompatActivity implements HorizontalVideoA
         String commenceTime = intent.getStringExtra("commenceTime");
         String homeTeam = intent.getStringExtra("homeTeam");
         String awayTeam = intent.getStringExtra("awayTeam");
+        leagueName = intent.getStringExtra("leagueName");
+        countryName = intent.getStringExtra("countryName");
         bookmaker = (Bookmakers) intent.getSerializableExtra("bookmaker");
-
-        System.out.println("Bookmaker: " + bookmaker);
 
         usernameTextView = findViewById(R.id.user_name);
         bottomsheet_button = findViewById(R.id.bottomsheet_button);
@@ -107,8 +107,8 @@ public class PanelActivity extends AppCompatActivity implements HorizontalVideoA
             textViewHomeTeam.setText(homeTeam);
             textViewAwayTeam.setText(awayTeam);
 
-            getTeamLogoUrl(homeTeam, team1Logo);
-            getTeamLogoUrl(awayTeam, team2Logo);
+            getTeamLogoUrl(homeTeam, team1Logo, countryName);
+            getTeamLogoUrl(awayTeam, team2Logo, countryName);
         } else {
             textViewHomeTeam.setText("Equipo Local Desconocido");
             textViewAwayTeam.setText("Equipo Visitante Desconocido");
@@ -148,21 +148,23 @@ public class PanelActivity extends AppCompatActivity implements HorizontalVideoA
 
     }
 
-    private void getTeamLogoUrl(String teamName, ImageView teamLogoImageView) {
+    private void getTeamLogoUrl(String teamName, ImageView teamLogoImageView, String countryName) {
 
-        TeamService teamService = AllSportsApiClient.getClient().create(TeamService.class);
-        Call<TeamResponse> call = teamService.getTeamByName(teamName);
+        TeamService teamService = ApiFootballClient.getClient().create(TeamService.class);
+        Call<TeamsResponse> call = countryName != null && !countryName.isEmpty()
+                ? teamService.getTeamByNameCountry(teamName, countryName) :
+                teamService.getTeamByName(teamName);
 
-        call.enqueue(new Callback<TeamResponse>() {
+        call.enqueue(new Callback<TeamsResponse>() {
             @Override
-            public void onResponse(Call<TeamResponse> call, Response<TeamResponse> response) {
+            public void onResponse(Call<TeamsResponse> call, Response<TeamsResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    TeamResponse teamResponse = response.body();
+                    TeamsResponse teamResponse = response.body();
 
-                    List<Team> teams = teamResponse.getResult() != null ? teamResponse.getResult() : new ArrayList<>();
-                    if (!teams.isEmpty()) {
-                        Team team = teams.get(0);
-                        String logoUrl = team.getTeamLogo();
+                    List<TeamsInfo> teamsList = teamResponse.getResponse();
+                    if (!teamsList.isEmpty()) {
+                        TeamsInfo team = teamsList.get(0);
+                        String logoUrl = team.getTeam().getLogo();
 
                         if (logoUrl != null && !logoUrl.isEmpty()) {
                             // Usar Glide para cargar la imagen desde URL
@@ -184,7 +186,7 @@ public class PanelActivity extends AppCompatActivity implements HorizontalVideoA
             }
 
             @Override
-            public void onFailure(Call<TeamResponse> call, Throwable t) {
+            public void onFailure(Call<TeamsResponse> call, Throwable t) {
                 Toast.makeText(PanelActivity.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

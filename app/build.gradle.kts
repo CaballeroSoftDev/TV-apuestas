@@ -19,6 +19,7 @@ android {
         localProperties.load(project.rootProject.file("local.properties").inputStream())
         buildConfigField("String", "ODDS_API_KEY", "\"${localProperties.getProperty("ODDS_API_KEY")}\"")
         buildConfigField("String", "ALL_SPORTS_API_KEY", "\"${localProperties.getProperty("ALL_SPORTS_API_KEY")}\"")
+        buildConfigField("String", "API_FOOTBALL_API_KEY", "\"${localProperties.getProperty("API_FOOTBALL_API_KEY")}\"")
     }
 
     buildFeatures {
@@ -50,4 +51,5 @@ dependencies {
     implementation(libs.converter.gson)
     implementation(libs.logging.interceptor)
     implementation("com.github.bumptech.glide:glide:4.16.0")
+    implementation("com.github.corouteam:GlideToVectorYou:v2.0.0")
 }

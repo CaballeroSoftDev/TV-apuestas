@@ -7,7 +7,7 @@ Aplicación Android para mostrar información y apuestas deportivas utilizando T
 - Android Studio
 - API Keys para los servicios:
   - [The Odds API](https://the-odds-api.com/)
-  - [AllSportsAPI Soccer/Football](https://allsportsapi.com/soccer-football-api)
+  - [API-SPORTS](https://api-sports.io/)
 
 ## Obtención de las API Keys
 
@@ -15,9 +15,9 @@ Aplicación Android para mostrar información y apuestas deportivas utilizando T
    Regístrate y obtén tu clave en:  
    [https://the-odds-api.com/](https://the-odds-api.com/)
 
-2. **AllSportsAPI Soccer/Football**  
+2. **API-SPORTS**  
    Regístrate y obtén tu clave en:  
-   [https://allsportsapi.com/soccer-football-api](https://allsportsapi.com/soccer-football-api)
+   [https://api-sports.io/](https://api-sports.io/)
 
 ## Configuración de las API Keys
 
@@ -26,7 +26,7 @@ Aplicación Android para mostrar información y apuestas deportivas utilizando T
 
    ```properties
    ODDS_API_KEY=tu_clave_de_the_odds_api
-   ALL_SPORTS_API_KEY=tu_clave_de_allsportsapi
+   API_FOOTBALL_API_KEY=tu_clave_de_api_sports
    ```
 
 ## ¿Cómo se utilizan las claves?
