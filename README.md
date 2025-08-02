@@ -1,6 +1,6 @@
 # TV-apuestas
 
-Aplicación Android para mostrar información y apuestas deportivas utilizando The Odds API y AllSportsAPI.
+Aplicación Android para mostrar información y apuestas deportivas utilizando The Odds API y API-SPORTS.
 
 ## Requisitos
 
