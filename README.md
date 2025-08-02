@@ -31,4 +31,4 @@ Aplicación Android para mostrar información y apuestas deportivas utilizando T
 
 ## ¿Cómo se utilizan las claves?
 
-El archivo `app/build.gradle.kts` carga las claves del archivo `local.properties` y las expone a tu código como variables de configuración `BuildConfig.ODDS_API_KEY` y `BuildConfig.ALL_SPORTS_API_KEY`.
+El archivo `app/build.gradle.kts` carga las claves del archivo `local.properties` y las expone a tu código como variables de configuración `BuildConfig.ODDS_API_KEY` y `BuildConfig.API_FOOTBALL_API_KEY`.
